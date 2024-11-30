@@ -1,0 +1,38 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and background setup */
+body, html {
+    height: 100%;
+    background-image: url('your-background-image.jpg'); /* Replace with your background image path */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Centering the button as per the layout */
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.enter-btn {
+    padding: 15px 30px;
+    background-color: #a4c639;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.enter-btn:hover {
+    background-color: #8baa34;
+}

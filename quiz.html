@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Degradation Quiz</title>
+    <style>
+        /* Basic styling for the quiz layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f8;
+        }
+
+        header {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        main {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .feedback {
+            font-weight: bold;
+            color: #2d2d2d;
+            margin-top: 10px;
+        }
+
+        .feedback.correct {
+            color: green;
+        }
+
+        .feedback.incorrect {
+            color: red;
+        }
+
+        #score {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Land Degradation Quiz</h1>
+    </header>
+
+    <main>
+        <h2>Test your knowledge on land degradation</h2>
+
+        <div id="quiz-container"></div>
+        <button onclick="submitQuiz()">Submit Quiz</button>
+        
+        <div id="score"></div>
+    </main>
+
+    <script>
+        const questions = [
+            // 50 Questions pool with question structure
+            { question: "What is a common cause of land degradation in India?", options: ["Urbanization", "Deforestation", "Industrialization"], answer: "Deforestation" },
+    { question: "Which method is effective in preventing soil erosion?", options: ["Overgrazing", "Monoculture", "Afforestation"], answer: "Afforestation" },
+    { question: "Which state in India is most affected by desertification?", options: ["Rajasthan", "Kerala", "Sikkim"], answer: "Rajasthan" },
+    { question: "What process involves the removal of topsoil by natural forces?", options: ["Erosion", "Deforestation", "Urbanization"], answer: "Erosion" },
+    { question: "What type of farming can lead to soil degradation if overused?", options: ["Organic Farming", "Monoculture", "Agroforestry"], answer: "Monoculture" },
+    { question: "Which practice helps in water conservation and reduces soil erosion?", options: ["Afforestation", "Industrialization", "Urban Sprawl"], answer: "Afforestation" },
+    { question: "Which gas is a major contributor to global warming?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen"], answer: "Carbon Dioxide" },
+    { question: "What is the primary cause of desertification?", options: ["Deforestation", "Overgrazing", "Urbanization"], answer: "Overgrazing" },
+    { question: "Which region is highly vulnerable to soil erosion in India?", options: ["Himalayas", "Deserts", "Plains"], answer: "Himalayas" },
+    { question: "Which element is essential for plant growth but depleted by intensive farming?", options: ["Nitrogen", "Lead", "Sulfur"], answer: "Nitrogen" },
+    { question: "Which farming technique involves rotating crops to maintain soil fertility?", options: ["Crop Rotation", "Slash and Burn", "Deforestation"], answer: "Crop Rotation" },
+    { question: "What is a major effect of deforestation?", options: ["Increased biodiversity", "Soil erosion", "Soil improvement"], answer: "Soil erosion" },
+    { question: "What type of land management can reduce desertification?", options: ["Sustainable Agriculture", "Industrialization", "Mining"], answer: "Sustainable Agriculture" },
+    { question: "Which state is known for severe coastal erosion?", options: ["Kerala", "Punjab", "Uttarakhand"], answer: "Kerala" },
+    { question: "Which land management technique can help prevent landslides?", options: ["Terracing", "Grazing", "Mining"], answer: "Terracing" },
+    { question: "What effect does over-irrigation have on soil?", options: ["Improves fertility", "Leads to waterlogging and salinity", "Promotes erosion"], answer: "Leads to waterlogging and salinity" },
+    { question: "Which farming practice helps reduce land degradation?", options: ["Shifting Cultivation", "Sustainable Farming", "Monoculture"], answer: "Sustainable Farming" },
+    { question: "What is a benefit of agroforestry?", options: ["Increased deforestation", "Enhanced biodiversity", "Increased soil salinity"], answer: "Enhanced biodiversity" },
+    { question: "What kind of pollution contributes to acid rain?", options: ["Carbon Dioxide", "Sulfur Dioxide", "Nitrogen"], answer: "Sulfur Dioxide" },
+    { question: "Which of these is a consequence of mining?", options: ["Soil fertility improvement", "Land degradation", "Increased forest cover"], answer: "Land degradation" },
+    { question: "What method can prevent soil compaction?", options: ["Overgrazing", "Crop Rotation", "Heavy machinery use"], answer: "Crop Rotation" },
+    { question: "How does afforestation help degraded land?", options: ["Increases soil erosion", "Reduces water retention", "Restores vegetation"], answer: "Restores vegetation" },
+    { question: "Which factor most contributes to soil erosion on hill slopes?", options: ["Terracing", "Deforestation", "Afforestation"], answer: "Deforestation" },
+    { question: "What is a direct cause of soil salinization?", options: ["Deforestation", "Over-irrigation", "Crop Rotation"], answer: "Over-irrigation" },
+    { question: "Which farming method is best for maintaining soil health?", options: ["Monoculture", "Crop Rotation", "Shifting Cultivation"], answer: "Crop Rotation" },
+    { question: "What causes the loss of soil fertility over time?", options: ["Overuse of fertilizers", "Organic farming", "Agroforestry"], answer: "Overuse of fertilizers" },
+    { question: "What is a natural way to prevent erosion in coastal areas?", options: ["Urbanization", "Planting mangroves", "Mining"], answer: "Planting mangroves" },
+    { question: "Which type of erosion is common in mountainous regions?", options: ["Sheet Erosion", "Gully Erosion", "Landslide Erosion"], answer: "Landslide Erosion" },
+    { question: "What does 'overgrazing' lead to?", options: ["Improved soil fertility", "Soil degradation", "Enhanced forest cover"], answer: "Soil degradation" },
+    { question: "What causes the phenomenon of 'urban sprawl'?", options: ["Population decrease", "Overgrazing", "Rapid urban expansion"], answer: "Rapid urban expansion" },
+    { question: "Which agricultural practice uses excessive water and often leads to salinization?", options: ["Agroforestry", "Rain-fed farming", "Over-irrigation"], answer: "Over-irrigation" },
+    { question: "Which practice reduces soil erosion on steep slopes?", options: ["Contour farming", "Clear-cutting", "Overgrazing"], answer: "Contour farming" },
+    { question: "Which of these is a direct effect of soil erosion?", options: ["Improved soil structure", "Loss of soil fertility", "Increased biodiversity"], answer: "Loss of soil fertility" },
+    { question: "What impact does deforestation have on climate?", options: ["Cools the region", "Contributes to global warming", "Reduces air pollution"], answer: "Contributes to global warming" },
+    { question: "Which farming technique uses trees to help preserve soil?", options: ["Agroforestry", "Monoculture", "Overgrazing"], answer: "Agroforestry" },
+    { question: "What is a common source of chemical soil pollution?", options: ["Industrial waste", "Agroforestry", "Contour plowing"], answer: "Industrial waste" },
+    { question: "Which crop rotation practice benefits soil nutrients?", options: ["Same crop every year", "Alternate legume and cereal crops", "Shifting cultivation"], answer: "Alternate legume and cereal crops" },
+    { question: "How can terracing benefit hilly agriculture?", options: ["Increases erosion", "Reduces water runoff", "Destroys vegetation"], answer: "Reduces water runoff" },
+    { question: "What can excessive use of pesticides lead to?", options: ["Soil fertility improvement", "Soil and water contamination", "Increased biodiversity"], answer: "Soil and water contamination" },
+    { question: "Which factor most contributes to land subsidence?", options: ["Groundwater over-extraction", "Afforestation", "Crop Rotation"], answer: "Groundwater over-extraction" },
+    { question: "Which erosion type removes a uniform layer of soil?", options: ["Sheet Erosion", "Gully Erosion", "Rill Erosion"], answer: "Sheet Erosion" },
+    { question: "What is a natural method for controlling wind erosion?", options: ["Deforestation", "Windbreaks", "Overgrazing"], answer: "Windbreaks" },
+    { question: "Which sustainable practice involves planting cover crops?", options: ["Afforestation", "Cover cropping", "Monoculture"], answer: "Cover cropping" },
+    { question: "What is a consequence of shifting cultivation?", options: ["Enhanced soil quality", "Increased forest cover", "Land degradation"], answer: "Land degradation" },
+    { question: "How does overuse of fertilizers affect soil?", options: ["Decreases acidity", "Enhances organic matter", "Causes nutrient imbalance"], answer: "Causes nutrient imbalance" },
+    { question: "What is a major consequence of groundwater depletion?", options: ["Improved soil fertility", "Increased land subsidence", "Enhanced rainfall"], answer: "Increased land subsidence" },
+    { question: "Which farming method reduces water use in dry areas?", options: ["Flood irrigation", "Drip irrigation", "Over-irrigation"], answer: "Drip irrigation" },
+    { question: "What is a direct consequence of riverbank erosion?", options: ["Increased soil fertility", "Loss of river habitats", "Formation of deserts"], answer: "Loss of river habitats" }
+
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        const questionsPerRound = 5;
+
+        function loadQuestions() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            
+            for (let i = currentIndex; i < currentIndex + questionsPerRound && i < questions.length; i++) {
+                const questionBlock = document.createElement('div');
+                questionBlock.classList.add('question');
+                
+                const questionData = questions[i];
+                
+                questionBlock.innerHTML = `
+                    <p><strong>${i + 1}. ${questionData.question}</strong></p>
+                    <ul class="options">
+                        ${questionData.options.map(option => `<li><input type="radio" name="q${i}" value="${option}"> ${option}</li>`).join('')}
+                    </ul>
+                    <div class="feedback"></div>
+                `;
+                
+                quizContainer.appendChild(questionBlock);
+            }
+        }
+
+        function submitQuiz() {
+            const questionsContainer = document.querySelectorAll('.question');
+            questionsContainer.forEach((questionBlock, index) => {
+                const selectedOption = questionBlock.querySelector('input[type="radio"]:checked');
+                const feedback = questionBlock.querySelector('.feedback');
+                
+                const questionData = questions[currentIndex + index];
+                if (selectedOption) {
+                    if (selectedOption.value === questionData.answer) {
+                        score++;
+                        feedback.textContent = 'Correct!';
+                        feedback.className = 'feedback correct';
+                    } else {
+                        feedback.textContent = 'Incorrect!';
+                        feedback.className = 'feedback incorrect';
+                    }
+                } else {
+                    feedback.textContent = 'No answer selected!';
+                    feedback.className = 'feedback incorrect';
+                }
+            });
+
+            currentIndex += questionsPerRound;
+
+            if (currentIndex < questions.length) {
+                setTimeout(() => {
+                    loadQuestions();
+                    document.getElementById('score').textContent = `Current Score: ${score}`;
+                }, 1000);
+            } else {
+                document.getElementById('score').textContent = `Final Score: ${score} out of ${questions.length}`;
+                document.querySelector('button').disabled = true;
+            }
+        }
+
+        window.onload = loadQuestions;
+    </script>
+</body>
+</html>
